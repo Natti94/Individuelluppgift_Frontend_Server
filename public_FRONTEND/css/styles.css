@@ -1,0 +1,17 @@
+.REGISTER-FORM
+{
+display: grid;
+}
+
+h2, .username, .password, .email, .register, .delete
+{
+grid-column: 1 / 2;
+max-width: 200px;
+max-height: 200px;
+justify-self: center;
+}
+
+.userList 
+{
+justify-self: center;
+}

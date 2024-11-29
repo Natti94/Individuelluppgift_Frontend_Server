@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>individuelluppgift_frontend_server</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<script src="registerFunction.js"></script>
+<div class="REGISTER-FORM">
 <h2>Register</h2>
-<form method="post">
-<input id="username" placeholder="username">
-<input id="password" placeholder="password">
-<input id="email" placeholder="e-mail">
-<button id="login"></button>
+<form method="post"></form>
+<input type="text" class="username" id="username" placeholder="username">
+<br>
+<input type="text" class="password" id="password" placeholder="password">
+<br>
+<input text="text" class="email" id="email" placeholder="email">
+<br>
+<button onclick="registerUser()" class="register">Register</button>
+<br>
+<button onclick="removeUsers()" class="delete">Delete</button>
+<br>
+</div>
+<div class="userList" id="userList"></div>
 </form>
 </body>
 </html>
