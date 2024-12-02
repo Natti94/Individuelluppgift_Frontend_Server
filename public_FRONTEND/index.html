@@ -8,9 +8,10 @@
 </head>
 <body>
 <script src="registerFunction.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/validator@13.9.0/validator.min.js"></script>
 <div class="REGISTER-FORM">
 <h2>Register</h2>
-<form method="post"></form>
+<form method="POST"></form>
 <input type="text" class="username" id="username" placeholder="username">
 <br>
 <input type="text" class="password" id="password" placeholder="password">
@@ -19,9 +20,7 @@
 <br>
 <button onclick="registerUser()" class="register">Register</button>
 <br>
-<button onclick="removeUsers()" class="delete">Delete</button>
 <br>
-<div class="userList" id="userList"></div>
 </div>
 </form>
 </body>

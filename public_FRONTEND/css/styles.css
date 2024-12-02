@@ -1,6 +1,7 @@
 .REGISTER-FORM
 {
 display: grid;
+padding-top: 10%;
 }
 
 h2, .username, .password, .email, .register, .delete

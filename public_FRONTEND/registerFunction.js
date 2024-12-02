@@ -1,36 +1,25 @@
 function registerUser() {
+  var userNameField = document.getElementById("username");
+  var passWordField = document.getElementById("password");
+  var emailField = document.getElementById("email");
 
-    var userNameField = document.getElementById('username')
-    var passWordField = document.getElementById('password')
-    var emailField = document.getElementById('email')
-    let userList = document.getElementById("userList");
-
-    if (userNameField.value !== "" && passWordField.value !== "" && emailField.value !== "") {
-        let userContainer = document.createElement("div");
-        let displayName = document.createElement("input");
-        displayName.value = userNameField.value;
-        displayName.readOnly = true;
-        let displayPassword = document.createElement("input");
-        displayPassword.value = passWordField.value;
-        displayPassword.readOnly = true;
-        let displayEmail = document.createElement("input");
-        displayEmail.value = emailField.value;
-        displayEmail.readOnly = true;
-        userContainer.appendChild(displayName);
-        userContainer.appendChild(displayPassword);
-        userContainer.appendChild(displayEmail);
-        userList.appendChild(userContainer);
-        userNameField.value = "";
-        passWordField.value = "";
-        emailField.value = "";
-        return;
+  if (
+    userNameField.value !== "" &&
+    passWordField.value !== "" &&
+    emailField.value !== ""
+  ) {
+    if (!validator.isEmail(emailField.value)) {
+      alert("Invalid email, try again (ex. natnael@jensen.se).");
+      return;
     }
-};
 
-function removeUsers() {
+    userNameField.value = "";
+    passWordField.value = "";
+    emailField.value = "";
 
-    let userList = document.getElementById("userList");
-    if (userList) {
-        userList.innerHTML = "";
-    }
+    return;
+  } else {
+    alert("Please fill out all the fields, try again.");
+  }
 }
+
