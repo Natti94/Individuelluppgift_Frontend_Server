@@ -1,3 +1,4 @@
+
 function registerUser() {
   var userNameField = document.getElementById("username");
   var passWordField = document.getElementById("password");
