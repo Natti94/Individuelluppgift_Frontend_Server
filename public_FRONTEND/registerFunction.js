@@ -1,4 +1,3 @@
-
 function registerUser() {
   var userNameField = document.getElementById("username");
   var passWordField = document.getElementById("password");
@@ -23,4 +22,5 @@ function registerUser() {
     alert("Please fill out all the fields, try again.");
   }
 }
+
 
