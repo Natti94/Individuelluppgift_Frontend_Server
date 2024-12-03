@@ -44,7 +44,7 @@ async function registerUser(event) {
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to register user, try again.");
+      alert("Error creating user.");
     }
   } else {
     alert("Fill out all the fields, try register again.");
