@@ -1,21 +1,28 @@
-async function registerUser() {
-  var userNameField = document.getElementById("username");
-  var passWordField = document.getElementById("password");
-  var emailField = document.getElementById("email");
+async function registerUser(event) {
+  event.preventDefault();
+
+  const userNameField = document.getElementById("username");
+  const passWordField = document.getElementById("password");
+  const emailField = document.getElementById("email");
 
   if (
     userNameField.value !== "" &&
     passWordField.value !== "" &&
     emailField.value !== ""
   ) {
-    let userData = {
+    if (!validator.isEmail(emailField.value)) {
+      alert("Invalid email, try register again (e.g., hej@jensen.se).");
+      return;
+    }
+
+    const userData = {
       userNameField: userNameField.value,
       passWordField: passWordField.value,
       emailField: emailField.value,
     };
 
     try {
-      let response = await fetch("http://localhost:5000/api/user", {
+      const response = await fetch("http://localhost:5000/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,15 +31,14 @@ async function registerUser() {
       });
 
       if (response.ok) {
-        let result = await response.json();
+        const result = await response.json();
         console.log(result.message);
         alert("User registered successfully!");
-
         userNameField.value = "";
         passWordField.value = "";
         emailField.value = "";
       } else {
-        let errorResult = await response.json();
+        const errorResult = await response.json();
         console.error(errorResult.message);
         alert("Error: " + errorResult.message);
       }
@@ -40,5 +46,7 @@ async function registerUser() {
       console.error("Error:", error);
       alert("Failed to register user, try again.");
     }
+  } else {
+    alert("Fill out all the fields, try register again.");
   }
 }
