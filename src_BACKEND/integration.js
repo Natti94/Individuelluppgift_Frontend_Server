@@ -50,3 +50,5 @@ async function registerUser(event) {
     alert("Fill out all the fields, try register again.");
   }
 }
+
+

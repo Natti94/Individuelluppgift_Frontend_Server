@@ -10,23 +10,11 @@
     <div class="REGISTER-FORM">
       <h2>Register</h2>
       <form>
-        <input
-          class="username"
-          type="text"
-          id="username"
-          placeholder="username"
-        />
-
-        <input
-          class="password"
-          type="text"
-          id="password"
-          placeholder="password"
-        />
-
-        <input class="email" type="text" id="email" placeholder="email" />
-
-        <button onclick="registerUser(event)" class="register">Register</button>
+        <input type="text" id="username" placeholder="username" />
+        <input type="text" id="password" placeholder="password" />
+        <input type="text" id="email" placeholder="email" />
+        <button onclick="registerUser(event)">Register</button>
+        <div id="userList"></div>
       </form>
     </div>
     <script src="../src_BACKEND/integration.js"></script>
