@@ -11,7 +11,7 @@ async function registerUser(event) {
     emailField.value !== ""
   ) {
     if (!validator.isEmail(emailField.value)) {
-      console.log("Invalid email, try register again (e.g., hej@jensen.se).");
+      alert("Invalid email, try register again (e.g., email@like.this).");
       return;
     }
 
@@ -36,19 +36,30 @@ async function registerUser(event) {
         userNameField.value = "";
         passWordField.value = "";
         emailField.value = "";
-        getAllUsers();
       } else {
         const errorResult = await response.json();
         console.error(errorResult.message);
         alert("Error: " + errorResult.message);
       }
     } catch (error) {
-      console.error("Error:", error);
+      alert("Error:", error);
     }
   } else {
-    console.log("Fill out all the fields, try register again.");
+    alert("Fill out all the fields, try register again.");
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const loadUsersButton = document.createElement("button");
+  loadUsersButton.textContent = "Load Users";
+  loadUsersButton.onclick = getAllUsers;
+
+  const userListContainer = document.createElement("div");
+  userListContainer.id = "userList";
+
+  document.body.appendChild(loadUsersButton);
+  document.body.appendChild(userListContainer);
+});
 
 async function getAllUsers() {
   try {
@@ -62,9 +73,11 @@ async function getAllUsers() {
     if (response.ok) {
       const users = await response.json();
       console.log(users);
+      alert("All users are about to be displayed.");
 
       const userListContainer = document.getElementById("userList");
-      userListContainer.innerHTML = ""; 
+      userListContainer.innerHTML = "";
+
       if (users.length === 0) {
         userListContainer.innerHTML = "<p>No users found.</p>";
         return;
@@ -73,14 +86,17 @@ async function getAllUsers() {
       const userList = document.createElement("ul");
       users.forEach((user) => {
         const userItem = document.createElement("li");
+
         userItem.textContent = `Username: ${user.userNameField}, Password: ${user.passWordField}, Email: ${user.emailField}`;
 
         const updateButton = document.createElement("button");
         updateButton.textContent = "Update";
+        updateButton.style.marginLeft = "10px";
         updateButton.onclick = () => updateUser(user._id);
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
+        deleteButton.style.marginLeft = "10px";
         deleteButton.onclick = () => deleteUser(user._id);
 
         userItem.appendChild(updateButton);
@@ -93,22 +109,27 @@ async function getAllUsers() {
     } else {
       const errorResult = await response.json();
       console.error(errorResult.message);
-      alert("Error: " + errorResult.message);
+      alert("Error fetching users: " + errorResult.message);
     }
   } catch (error) {
     console.error("Error fetching users:", error);
+    alert("An error occurred while fetching users.");
   }
 }
-
 async function updateUser(userId) {
   const newUserName = prompt("Enter new username:");
   const newPassWord = prompt("Enter new password:");
   const newEmail = prompt("Enter new email:");
 
+  if (newEmail && !validator.isEmail(newEmail)) {
+    alert("Invalid email format. Please try again.");
+    return;
+  }
+
   const updatedData = {
-    userNameField: newUserName,
-    passWordField: newPassWord,
-    emailField: newEmail,
+    userNameField: newUserName || undefined,
+    passWordField: newPassWord || undefined,
+    emailField: newEmail || undefined,
   };
 
   try {
@@ -123,42 +144,41 @@ async function updateUser(userId) {
     if (response.ok) {
       const result = await response.json();
       console.log(result.message);
+      alert("User updated successfully!");
       getAllUsers();
     } else {
       const errorResult = await response.json();
       console.error(errorResult.message);
+      alert("Error updating user: " + errorResult.message);
     }
   } catch (error) {
     console.error("Error updating user:", error);
+    alert("An error occurred while updating the user.");
   }
 }
 
 async function deleteUser(userId) {
-  const confirmDelete = confirm("Are you sure you want to delete this user?");
+  if (!confirm("Are you sure you want to delete this user?")) return;
 
-  if (confirmDelete) {
-    try {
-      const response = await fetch(`http://localhost:5000/api/user/${userId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  try {
+    const response = await fetch(`http://localhost:5000/api/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result.message);
-        getAllUsers();
-      } else {
-        const errorResult = await response.json();
-        console.error(errorResult.message);
-      }
-    } catch (error) {
-      console.log("Error deleting user:", error);
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result.message);
+      alert("User deleted successfully!");
+      getAllUsers();
+    } else {
+      const errorResult = await response.json();
+      console.error(errorResult.message);
+      alert("Error deleting user: " + errorResult.message);
     }
+  } catch (error) {
+    console.error("Error deleting user:", error);
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  getAllUsers();
-});
