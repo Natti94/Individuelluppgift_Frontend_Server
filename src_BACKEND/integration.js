@@ -184,7 +184,7 @@ async function deleteUser(userId) {
 }
 
 async function loginUser(event) {
-  event.preventDefault();
+  
   document
     .getElementById("secretButton")
     .addEventListener("click", fetchSecretData);
@@ -224,39 +224,34 @@ function logoutUser() {
   localStorage.removeItem("token");
   alert("You have been logged out.");
 }
-
 async function fetchSecretData() {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      alert("You must log in first to access this data.");
+      alert('Please log in first.');
       return;
     }
 
-    const response = await fetch("http://localhost:5000/api/secret", {
-      method: "GET",
+    const response = await fetch('http://localhost:5000/api/secret', {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
     });
 
-    if (response.ok) {
-      const secretData = await response.json();
-      console.log(secretData);
-      const secretDataContainer = document.getElementById(
-        "secretDataContainer"
-      );
-      secretDataContainer.innerHTML = `<p>${secretData.message}</p>`;
-    } else {
-      const errorResult = await response.json();
-      console.error(errorResult.message);
-      alert("Error: " + errorResult.message);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error fetching secret data:', errorData);
+      alert(`Error fetching secret data: ${errorData.message}`);
+      return;
     }
+
+    const data = await response.json();
+    console.log(data);
+    // Update UI with secret data
   } catch (error) {
-    console.error("Error fetching secret data:", error);
-    alert("An error occurred while fetching secret data.");
+    console.error('Error fetching secret data:', error);
+    alert('An error occurred while fetching secret data. Please try again.');
   }
 }
-
 window.fetchSecretData = fetchSecretData;
