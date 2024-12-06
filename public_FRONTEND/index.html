@@ -6,16 +6,40 @@
     <title>Frontend</title>
   </head>
   <body>
+    <!-- REGISTER FORM -->
     <div class="REGISTER-FORM">
       <h2>Register</h2>
       <form>
-        <input type="text" id="username" placeholder="username" />
-        <input type="text" id="password" placeholder="password" />
-        <input type="text" id="email" placeholder="email@like.this" />
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <input type="email" id="email" placeholder="email@like.this">
         <button onclick="registerUser(event)">Register</button>
-        <div id="userList"></div>
       </form>
     </div>
+
+    <!-- LOGIN FORM -->
+    <div class="LOGIN-FORM">
+      <h2>Login</h2>
+      <form>
+        <input type="email" id="loginEmail" placeholder="email@like.this">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button type="submit" id="loginButton" onclick="loginUser(event)">Login</button>
+      </form>
+    </div>
+
+    <!-- SECRET DATA SECTION -->
+    <div class="SECRET-DATA">
+      <h2>Protected Route</h2>
+      <button id="getSecretData" onclick="fetchSecretData()">Secret</button>
+      <div id="secretDataContainer"></div>
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="LOGOUT">
+      <button onclick="logoutUser()">Logout</button>
+    </div>
+
+    <!-- SCRIPTS -->
     <script src="../src_BACKEND/integration.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/validator@13.9.0/validator.min.js"></script>
   </body>

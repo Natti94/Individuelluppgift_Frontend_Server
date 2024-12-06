@@ -116,6 +116,7 @@ async function getAllUsers() {
     alert("An error occurred while fetching users.");
   }
 }
+
 async function updateUser(userId) {
   const newUserName = prompt("Enter new username:");
   const newPassWord = prompt("Enter new password:");
@@ -153,7 +154,6 @@ async function updateUser(userId) {
     }
   } catch (error) {
     console.error("Error updating user:", error);
-    alert("An error occurred while updating the user.");
   }
 }
 
@@ -182,3 +182,81 @@ async function deleteUser(userId) {
     console.error("Error deleting user:", error);
   }
 }
+
+async function loginUser(event) {
+  event.preventDefault();
+  document
+    .getElementById("secretButton")
+    .addEventListener("click", fetchSecretData);
+  document.getElementById("logoutButton").addEventListener("click", logoutUser);
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const response = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Login successful, token received:", data.token);
+
+      localStorage.setItem("token", data.token);
+
+      alert("Login successful!");
+    } else {
+      const errorData = await response.json();
+      console.error("Error during login:", errorData.message);
+      alert("Error: " + errorData.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred during login.");
+  }
+}
+
+function logoutUser() {
+  localStorage.removeItem("token");
+  alert("You have been logged out.");
+}
+
+async function fetchSecretData() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must log in first to access this data.");
+      return;
+    }
+
+    const response = await fetch("http://localhost:5000/api/secret", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const secretData = await response.json();
+      console.log(secretData);
+      const secretDataContainer = document.getElementById(
+        "secretDataContainer"
+      );
+      secretDataContainer.innerHTML = `<p>${secretData.message}</p>`;
+    } else {
+      const errorResult = await response.json();
+      console.error(errorResult.message);
+      alert("Error: " + errorResult.message);
+    }
+  } catch (error) {
+    console.error("Error fetching secret data:", error);
+    alert("An error occurred while fetching secret data.");
+  }
+}
+
+window.fetchSecretData = fetchSecretData;
