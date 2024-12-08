@@ -182,16 +182,11 @@ async function deleteUser(userId) {
     console.error("Error deleting user:", error);
   }
 }
-
 async function loginUser(event) {
-  
-  document
-    .getElementById("secretButton")
-    .addEventListener("click", fetchSecretData);
-  document.getElementById("logoutButton").addEventListener("click", logoutUser);
+  event.preventDefault(); 
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
   try {
     const response = await fetch("http://localhost:5000/api/login", {
@@ -204,36 +199,41 @@ async function loginUser(event) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Login successful, token received:", data.token);
-
       localStorage.setItem("token", data.token);
+    
+      document.getElementById("logoutSection").style.display = "block";
+      document.getElementById("loginSection").style.display = "none";
 
       alert("Login successful!");
     } else {
       const errorData = await response.json();
-      console.error("Error during login:", errorData.message);
       alert("Error: " + errorData.message);
     }
   } catch (error) {
-    console.error("Error:", error);
-    alert("An error occurred during login.");
+    console.error("Login error:", error);
+    alert("An error occurred during login. Please try again.");
   }
 }
 
 function logoutUser() {
   localStorage.removeItem("token");
+
+  document.getElementById("logoutSection").style.display = "none";
+  document.getElementById("loginSection").style.display = "block";
+
   alert("You have been logged out.");
 }
+
 async function fetchSecretData() {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('Please log in first.');
+      alert("Please log in first.");
       return;
     }
 
-    const response = await fetch('http://localhost:5000/api/secret', {
-      method: 'GET',
+    const response = await fetch("http://localhost:5000/api/secret", {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -241,17 +241,21 @@ async function fetchSecretData() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Error fetching secret data:', errorData);
       alert(`Error fetching secret data: ${errorData.message}`);
       return;
     }
 
     const data = await response.json();
-    console.log(data);
-    // Update UI with secret data
+    console.log("Secret data received:", data);
+
+    const secretDataContainer = document.getElementById("secretDataContainer");
+    secretDataContainer.textContent = data.message;
   } catch (error) {
-    console.error('Error fetching secret data:', error);
-    alert('An error occurred while fetching secret data. Please try again.');
+    console.error("Error fetching secret data:", error);
+    alert("An error occurred while fetching secret data. Please try again.");
   }
 }
-window.fetchSecretData = fetchSecretData;
+
+document.getElementById("loginButton").addEventListener("click", loginUser);
+document.getElementById("logoutButton").addEventListener("click", logoutUser);
+document.getElementById("getSecretData").addEventListener("click", fetchSecretData);
