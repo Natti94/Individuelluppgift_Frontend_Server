@@ -1,2 +1,1 @@
-# Individuelluppgift_Frontend_Server
-Inlämningsuppgift - Bygg en Node.js-applikation med REST API och databas
+OBS! saknar commits p.g.a. delete av tidigare repository :(
